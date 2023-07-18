@@ -13,7 +13,7 @@ An Android App that displays weather data based on the OpenWeatherApi
 
 ### Location On App Walkthrough
 
-<img src="https://i.imgur.com/hqcPzDH.gif" width=250><br>
+<img src="https://github.com/Kariizma/OpenWeatherApiApp/blob/master/LocationOnWeatherApp.gif" width=250><br>
 
 ### Location On App Walkthrough
 
