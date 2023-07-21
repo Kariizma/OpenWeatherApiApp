@@ -15,7 +15,7 @@ An Android App that displays weather data based on the OpenWeatherApi
 
 <img src="https://github.com/Kariizma/OpenWeatherApiApp/blob/master/LocationOnWeatherApp.gif" width=250><br>
 
-### Location On App Walkthrough
+### Location OFF App Walkthrough
 
 <img src="https://github.com/Kariizma/OpenWeatherApiApp/blob/master/LocationOffWeatherApp.gif" width=250><br>
 
