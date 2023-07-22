@@ -57,7 +57,6 @@ import com.example.weather.model.OpenWeather
 import com.example.weather.ui.theme.WeatherTheme
 import com.example.weather.viewmodel.WeatherUIState
 import com.example.weather.viewmodel.WeatherViewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -66,6 +65,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import java.io.IOException
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -137,12 +138,16 @@ class MainActivity : ComponentActivity() {
             onResult = { isGranted ->
                 if (isGranted) {
                     fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                        val geocoder = Geocoder(this)
-                        val currentLocation =
-                            geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                        Log.e("Location Coords:", currentLocation!!.first().locality)
-                        viewModel.getLocationUpdate(currentLocation!!.first().locality)
-                        viewModel.getWeatherData(currentLocation!!.first().locality)
+                        try {
+                            val geocoder = Geocoder(this, Locale.getDefault())
+                            val currentLocation = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                            viewModel.getWeatherData(currentLocation!!.first().locality)
+                        } catch (e: IOException) {
+                            Log.e("Location Coords:", "Geocoding failed", e)
+                            // fallback to a default location
+                            val lastSearchedCity = viewModel.getLastSearchedCity()
+                            viewModel.getWeatherData(lastSearchedCity)
+                        }
                     }
                 } else {
                     val lastSearchedCity = viewModel.getLastSearchedCity()
@@ -158,6 +163,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
 
 
